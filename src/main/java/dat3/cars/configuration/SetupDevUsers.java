@@ -1,6 +1,8 @@
 package dat3.cars.configuration;
 
+import dat3.cars.entity.Car;
 import dat3.cars.entity.Member;
+import dat3.cars.repository.CarRepository;
 import dat3.cars.repository.MemberRepository;
 import dat3.security.entity.Role;
 import dat3.security.entity.UserWithRoles;
@@ -14,11 +16,14 @@ public class SetupDevUsers implements ApplicationRunner {
 
     UserWithRolesRepository userWithRolesRepository;
     MemberRepository memberRepository;
+
+    CarRepository carRepository;
     String passwordUsedByAll;
 
-    public SetupDevUsers(UserWithRolesRepository userWithRolesRepository, MemberRepository memberRepository) {
+    public SetupDevUsers(UserWithRolesRepository userWithRolesRepository, MemberRepository memberRepository, CarRepository carRepository) {
         this.userWithRolesRepository = userWithRolesRepository;
         this.memberRepository = memberRepository;
+        this.carRepository = carRepository;
         passwordUsedByAll = "test12";
     }
     @Override
@@ -26,6 +31,14 @@ public class SetupDevUsers implements ApplicationRunner {
         Member m1 = new Member("userxx", passwordUsedByAll, "em@mail.com", "Johnny");
         memberRepository.save(m1);
 
+        Car c1 = Car.builder()
+                .brand("Citroen")
+                .model("Berlingo")
+                .pricePrDay(100)
+                .bestDiscount(50)
+                .build();
+
+        carRepository.save(c1);
         setupUserWithRoleUsers();
     }
 
